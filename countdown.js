@@ -43,21 +43,24 @@ class CountdownTimer extends HTMLElement {
         const now = new Date();
         const timeRemaining = this.endDate - now;
 
+        const days = Math.floor(Math.abs(timeRemaining) / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((Math.abs(timeRemaining) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((Math.abs(timeRemaining) % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((Math.abs(timeRemaining) % (1000 * 60)) / 1000);
+
         if (timeRemaining <= 0) {
             clearInterval(this.interval);
             this.dispatchEvent(new CustomEvent('countdown-finished'));
-            return;
+            this.daysElem.textContent = `-${days}d`;
+            this.hoursElem.textContent = `-${hours}h`;
+            this.minutesElem.textContent = `-${minutes}m`;
+            this.secondsElem.textContent = `-${seconds}s`;
+        } else {
+            this.daysElem.textContent = `${days}d`;
+            this.hoursElem.textContent = `${hours}h`;
+            this.minutesElem.textContent = `${minutes}m`;
+            this.secondsElem.textContent = `${seconds}s`;
         }
-
-        const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-        this.daysElem.textContent = `${days}d`;
-        this.hoursElem.textContent = `${hours}h`;
-        this.minutesElem.textContent = `${minutes}m`;
-        this.secondsElem.textContent = `${seconds}s`;
     }
 }
 

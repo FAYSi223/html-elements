@@ -6,22 +6,9 @@ class CountdownTimer extends HTMLElement {
 
         const wrapper = document.createElement('div');
         wrapper.classList.add('countdown-container');
+        this.updateStyles(wrapper);  // Setze die Stile
+
         wrapper.innerHTML = `
-            <style>
-                .countdown-container {
-                    font-family: Arial, sans-serif;
-                    font-size: 20px;
-                    color: #333;
-                    display: flex;
-                    gap: 10px;
-                }
-                .countdown-item {
-                    background-color: #f0f0f0;
-                    padding: 10px;
-                    border-radius: 5px;
-                    text-align: center;
-                }
-            </style>
             <div class="countdown-item" id="days">0d</div>
             <div class="countdown-item" id="hours">0h</div>
             <div class="countdown-item" id="minutes">0m</div>
@@ -37,6 +24,34 @@ class CountdownTimer extends HTMLElement {
 
         this.updateTimer();
         this.interval = setInterval(() => this.updateTimer(), 1000);
+    }
+
+    updateStyles(wrapper) {
+        // Lese alle relevanten Attribute aus und setze die Stile
+        const bgColor = this.getAttribute('bg-color') || '#f0f0f0';
+        const textColor = this.getAttribute('text-color') || '#333';
+        const fontSize = this.getAttribute('font-size') || '20px';
+        const padding = this.getAttribute('padding') || '10px';
+        const borderRadius = this.getAttribute('border-radius') || '5px';
+        const gap = this.getAttribute('gap') || '10px';
+
+        const style = document.createElement('style');
+        style.textContent = `
+            .countdown-container {
+                font-family: Arial, sans-serif;
+                font-size: ${fontSize};
+                color: ${textColor};
+                display: flex;
+                gap: ${gap};
+            }
+            .countdown-item {
+                background-color: ${bgColor};
+                padding: ${padding};
+                border-radius: ${borderRadius};
+                text-align: center;
+            }
+        `;
+        wrapper.appendChild(style);
     }
 
     updateTimer() {
